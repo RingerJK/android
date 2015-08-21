@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ringerjk.com.todoisapp.activity.EnterRecordActivity">
+
+    <item
+        android:id="@+id/delete"
+        android:orderInCategory="2"
+        android:icon="@drawable/basket"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom"
+        />
+
+     <item
+        android:id="@+id/ok"
+        android:orderInCategory="1"
+        android:icon="@drawable/okay"
+        android:title="@string/okay"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>
