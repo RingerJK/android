@@ -1,79 +1,60 @@
 package ringerjk.com.todoisapp.activity;
 
+import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ringerjk.com.todoisapp.R;
-import ringerjk.com.todoisapp.service.MyCursorLoader;
-import ringerjk.com.todoisapp.service.DatabaseAction;
+import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity {
+    final String LOG_TAG = "myLogs";
 
     public final static String keyNodeId = "noteId";
-
-    SimpleCursorAdapter scAdapter;
-    ListView listView;
-    DatabaseAction dba;
+    private ListView listView;
+    private SimpleCursorAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = (ListView) findViewById(R.id.lv);
 
-        dba = new DatabaseAction(this);
-        dba.openConnection();
+        final Cursor cursor = getContentResolver().query(ToDoListProvider.NOTE_CONTENT_URI, null, null, null, null);
+        startManagingCursor(cursor);
 
-        String[] from = new String[]{DatabaseAction.KEY_TITLE};
+        String[] from = new String[]{ToDoListProvider.KEY_TITLE};
         int[] to = new int[]{R.id.titleText};
 
-        scAdapter = new SimpleCursorAdapter(this, R.layout.custom_list_item, null, from, to, 0);
-
-        listView.setAdapter(scAdapter);
-
-        listView.isItemChecked(3);
+        adapter = new SimpleCursorAdapter(this, R.layout.custom_list_item, cursor, from, to, 0);
+        listView = (ListView)findViewById(R.id.lv);
+        listView.setAdapter(adapter);
 
         registerForContextMenu(listView);
-        getSupportLoaderManager().initLoader(0, null, this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), EnterRecordActivity.class);
                 intent.putExtra(keyNodeId, id);
                 startActivity(intent);
-                Log.i("Tag", "LongClick");
             }
         });
 
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Tag", "LongClick");
-                view.setSelected(true);
-                return true;
-            }
-        });
-
 
         listView.setMultiChoiceModeListener(new ListView.MultiChoiceModeListener() {
 
@@ -81,9 +62,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                if (checked){
+                if (checked) {
                     arrayList.add(id);
-                } if (!checked){
+                }
+                if (!checked) {
                     arrayList.remove(id);
                 }
             }
@@ -106,8 +88,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Log.i("TAG", "onActionItemClicked");
                 switch (item.getItemId()) {
                     case R.id.del_long_click:
-                        deleteSelectItems(arrayList);
-                        onLoaderReset(null); // можно ли так????
+                        Uri uri = ToDoListProvider.NOTE_CONTENT_URI;
+                        String selection = "";
+                        for (int i = 0; i < arrayList.size() ; i++ ) {
+                            selection = selection + "_id = " + String.valueOf(arrayList.get(i));
+                            if (arrayList.size()-1 != i) {
+                                selection = selection + " OR ";
+                            }
+                        }
+                        getContentResolver().delete(uri, selection, null);
+                        adapter.getCursor().requery();
                         mode.finish();
                         return true;
                 }
@@ -120,14 +110,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 arrayList.clear();
             }
         });
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dba.closeConnection();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,29 +130,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         return super.onOptionsItemSelected(item);
     }
-
-    private void deleteSelectItems(ArrayList<Long> idArrayList) {
-        for (Long id : idArrayList){
-            dba.deleteNote((int)(long)id);
-        }
-//        scAdapter.req
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bndl) {
-        return new MyCursorLoader(this, dba);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        scAdapter.swapCursor(cursor);
-    }
-
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        scAdapter.swapCursor(dba.getAllData()); // можно ли так???
-    }
-
-
 }
