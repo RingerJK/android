@@ -1,7 +1,5 @@
 package ringerjk.com.todoisapp.activity;
 
-import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public final static String keyNodeId = "noteId";
     private ListView listView;
     private SimpleCursorAdapter adapter;
+
+    private final static int REQUEST_CODE_NEW_NOTE = 11111;
+    private final static int REQUEST_CODE_MODIFIED_NOTE = 22222;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), EnterRecordActivity.class);
                 intent.putExtra(keyNodeId, id);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_MODIFIED_NOTE);
             }
         });
 
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                Log.i("TAG", "onCreateActionMode");
+                Log.i(LOG_TAG, "onCreateActionMode");
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.menu_main_long_click, menu);
                 return true;
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                Log.i("TAG", "onActionItemClicked");
+                Log.i(LOG_TAG, "onActionItemClicked");
                 switch (item.getItemId()) {
                     case R.id.del_long_click:
                         Uri uri = ToDoListProvider.NOTE_CONTENT_URI;
@@ -114,6 +116,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        Log.i(LOG_TAG, "onResume");
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -124,10 +138,24 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add:
                 Intent intent = new Intent(getApplicationContext(), EnterRecordActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_NEW_NOTE);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //requestCode - индефикатор интента, resultCode - код возврата(успешность операции), data - наш интент с данными
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(LOG_TAG, "onActivityResult");
+        switch (requestCode){
+            case REQUEST_CODE_MODIFIED_NOTE:
+//                Toast.makeText(this, String.valueOf(REQUEST_CODE_MODIFIED_NOTE), Toast.LENGTH_SHORT).show();
+                break;
+            case REQUEST_CODE_NEW_NOTE:
+//                Toast.makeText(this, String.valueOf(REQUEST_CODE_NEW_NOTE), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }

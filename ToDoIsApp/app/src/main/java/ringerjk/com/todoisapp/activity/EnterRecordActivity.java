@@ -44,7 +44,6 @@ public class EnterRecordActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
-
     }
 
     public void updateNote() {
@@ -70,6 +69,15 @@ public class EnterRecordActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "insert, result Uri : " + newUri.toString());
     }
 
+    public void composeEmail(){
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, textTitle.getText().toString());
+        emailIntent.putExtra(Intent.EXTRA_TEXT, textDesc.getText().toString());
+        startActivity(emailIntent);
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_entery_record, menu);
@@ -84,27 +92,37 @@ public class EnterRecordActivity extends AppCompatActivity {
                 if (textTitle.getText().toString().trim().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Заполните поле Title", Toast.LENGTH_SHORT).show();
                 } else if (idNoteForUpdateOrDelete != 0) {
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
                     updateNote();
                     idNoteForUpdateOrDelete = 0;
-                    startActivity(intent);
+                    intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
                 } else {
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
                     addNote();
-                    startActivity(intent);
+                    intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
                 break;
             case R.id.delete:
                 if (idNoteForUpdateOrDelete != 0) {
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
                     deleteNote();
                     idNoteForUpdateOrDelete = 0;
-                    startActivity(intent);
+                    intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
                 } else {
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
                 break;
+            case R.id.mail:
+                if (textTitle.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getApplicationContext(), "Заполните поле Title", Toast.LENGTH_SHORT).show();
+                } else {
+                    composeEmail();
+                }
         }
 
         return super.onOptionsItemSelected(item);

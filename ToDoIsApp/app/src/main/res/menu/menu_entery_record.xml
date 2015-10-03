@@ -19,4 +19,13 @@
         app:showAsAction="ifRoom"
         />
 
+    <item
+        android:id="@+id/mail"
+        android:orderInCategory="3"
+        android:icon="@drawable/mail"
+        android:title="@string/mail"
+        app:showAsAction="ifRoom"
+        />
+
+
 </menu>
