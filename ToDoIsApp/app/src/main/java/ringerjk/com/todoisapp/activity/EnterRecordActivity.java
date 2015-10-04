@@ -1,7 +1,5 @@
 package ringerjk.com.todoisapp.activity;
 
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 
 import ringerjk.com.todoisapp.R;
 import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
+import ringerjk.com.todoisapp.models.Note;
 
 public class EnterRecordActivity extends AppCompatActivity {
     final String LOG_TAG = "myLogs";
@@ -46,36 +45,12 @@ public class EnterRecordActivity extends AppCompatActivity {
         }
     }
 
-    public void updateNote() {
-        ContentValues cv = new ContentValues();
-        cv.put(ToDoListProvider.KEY_TITLE, textTitle.getText().toString());
-        cv.put(ToDoListProvider.KEY_DESCRIPTION, textDesc.getText().toString());
-        Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, idNoteForUpdateOrDelete);
-        int cnt = getContentResolver().update(uri, cv, null, null);
-        Log.d(LOG_TAG, "update, count = " + cnt);
-    }
-
-    public void deleteNote() {
-        Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, idNoteForUpdateOrDelete);
-        int cnt = getContentResolver().delete(uri, null, null);
-        Log.d(LOG_TAG, "delete, count = " + cnt);
-    }
-
-    public void addNote() {
-        ContentValues cv = new ContentValues();
-        cv.put(ToDoListProvider.KEY_TITLE, textTitle.getText().toString());
-        cv.put(ToDoListProvider.KEY_DESCRIPTION, textDesc.getText().toString());
-        Uri newUri = getContentResolver().insert(ToDoListProvider.NOTE_CONTENT_URI, cv);
-        Log.d(LOG_TAG, "insert, result Uri : " + newUri.toString());
-    }
-
     public void composeEmail(){
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
         emailIntent.setData(Uri.parse("mailto:"));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, textTitle.getText().toString());
         emailIntent.putExtra(Intent.EXTRA_TEXT, textDesc.getText().toString());
         startActivity(emailIntent);
-
     }
 
     @Override
@@ -92,24 +67,29 @@ public class EnterRecordActivity extends AppCompatActivity {
                 if (textTitle.getText().toString().trim().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Заполните поле Title", Toast.LENGTH_SHORT).show();
                 } else if (idNoteForUpdateOrDelete != 0) {
-                    updateNote();
-                    idNoteForUpdateOrDelete = 0;
+                    //updateNote();
                     intent = new Intent();
+                    intent.putExtra(Note.KEY_NOTE, new Note(idNoteForUpdateOrDelete,
+                                                            textTitle.getText().toString(),
+                                                            textDesc.getText().toString()));
                     setResult(RESULT_OK, intent);
+                    idNoteForUpdateOrDelete = 0;
                     finish();
                 } else {
-                    addNote();
                     intent = new Intent();
+                    intent.putExtra(Note.KEY_NOTE, new Note(textTitle.getText().toString(),
+                                                            textDesc.getText().toString()));
                     setResult(RESULT_OK, intent);
                     finish();
                 }
                 break;
             case R.id.delete:
                 if (idNoteForUpdateOrDelete != 0) {
-                    deleteNote();
-                    idNoteForUpdateOrDelete = 0;
+                    //deleteNote();
                     intent = new Intent();
-                    setResult(RESULT_OK, intent);
+                    intent.putExtra(Note.KEY_NOTE, idNoteForUpdateOrDelete);
+                    setResult(MainActivity.RESULT_DELETE, intent);
+                    idNoteForUpdateOrDelete = 0;
                     finish();
                 } else {
                     intent = new Intent();

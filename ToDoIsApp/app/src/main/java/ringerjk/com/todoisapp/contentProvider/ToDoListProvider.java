@@ -68,7 +68,6 @@ public class ToDoListProvider extends ContentProvider {
         db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query(TABLE_NOTE, projection, selection, selectionArgs, null, null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), NOTE_CONTENT_URI);
-
         return cursor;
     }
 

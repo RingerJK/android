@@ -1,5 +1,7 @@
 package ringerjk.com.todoisapp.activity;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,11 +22,14 @@ import java.util.ArrayList;
 
 import ringerjk.com.todoisapp.R;
 import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
+import ringerjk.com.todoisapp.models.Note;
 
 public class MainActivity extends AppCompatActivity {
     final String LOG_TAG = "myLogs";
 
     public final static String keyNodeId = "noteId";
+    final static int RESULT_DELETE = 654641;
+
     private ListView listView;
     private SimpleCursorAdapter adapter;
 
@@ -105,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-
             @Override
             public void onDestroyActionMode(ActionMode mode) {
                 listView.clearChoices();
@@ -151,10 +155,34 @@ public class MainActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onActivityResult");
         switch (requestCode){
             case REQUEST_CODE_MODIFIED_NOTE:
-//                Toast.makeText(this, String.valueOf(REQUEST_CODE_MODIFIED_NOTE), Toast.LENGTH_SHORT).show();
+                if (resultCode == RESULT_OK && data.getExtras() != null){
+                    Note note =(Note) data.getSerializableExtra(Note.KEY_NOTE);
+
+                    ContentValues cv = new ContentValues();
+                    cv.put(ToDoListProvider.KEY_TITLE, note.getTitle());
+                    cv.put(ToDoListProvider.KEY_DESCRIPTION, note.getDescription());
+
+                    Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, note.getId());
+                    int cnt = getContentResolver().update(uri, cv, null, null);
+
+                    Log.d(LOG_TAG, "update, count = " + cnt);
+                } else if (resultCode == MainActivity.RESULT_DELETE && data.getExtras() != null){
+                    int idNoteForDelete = data.getExtras().getInt(Note.KEY_NOTE);
+                    Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, idNoteForDelete);
+                    int cnt = getContentResolver().delete(uri, null, null);
+                    Log.d(LOG_TAG, "delete, count = " + cnt);
+                }
                 break;
             case REQUEST_CODE_NEW_NOTE:
-//                Toast.makeText(this, String.valueOf(REQUEST_CODE_NEW_NOTE), Toast.LENGTH_SHORT).show();
+                if (resultCode == RESULT_OK && data.getExtras() != null){
+                    Note note =(Note) data.getSerializableExtra(Note.KEY_NOTE);
+
+                    ContentValues cv = new ContentValues();
+                    cv.put(ToDoListProvider.KEY_TITLE, note.getTitle());
+                    cv.put(ToDoListProvider.KEY_DESCRIPTION, note.getDescription());
+
+                    Uri newUri = getContentResolver().insert(ToDoListProvider.NOTE_CONTENT_URI, cv);
+                }
                 break;
         }
     }
