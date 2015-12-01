@@ -1,7 +1,5 @@
 package ringerjk.com.todoisapp.activity;
 
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,13 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ringerjk.com.todoisapp.R;
 import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
-import ringerjk.com.todoisapp.models.Note;
 
 public class MainActivity extends AppCompatActivity {
     final String LOG_TAG = "myLogs";
@@ -44,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         final Cursor cursor = getContentResolver().query(ToDoListProvider.NOTE_CONTENT_URI, null, null, null, null);
         startManagingCursor(cursor);
 
-        String[] from = new String[]{ToDoListProvider.KEY_TITLE};
+        String[] from = new String[]{ToDoListProvider.KEY_TITLE_NOTES};
         int[] to = new int[]{R.id.titleText};
 
         adapter = new SimpleCursorAdapter(this, R.layout.custom_list_item, cursor, from, to, 0);
@@ -121,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Log.i(LOG_TAG, "onResume");
         super.onResume();
+        Log.i(LOG_TAG, "onResume");
         adapter.notifyDataSetChanged();
     }
 
@@ -153,37 +149,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(LOG_TAG, "onActivityResult");
-        switch (requestCode){
-            case REQUEST_CODE_MODIFIED_NOTE:
-                if (resultCode == RESULT_OK && data.getExtras() != null){
-                    Note note =(Note) data.getSerializableExtra(Note.KEY_NOTE);
-
-                    ContentValues cv = new ContentValues();
-                    cv.put(ToDoListProvider.KEY_TITLE, note.getTitle());
-                    cv.put(ToDoListProvider.KEY_DESCRIPTION, note.getDescription());
-
-                    Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, note.getId());
-                    int cnt = getContentResolver().update(uri, cv, null, null);
-
-                    Log.d(LOG_TAG, "update, count = " + cnt);
-                } else if (resultCode == MainActivity.RESULT_DELETE && data.getExtras() != null){
-                    int idNoteForDelete = data.getExtras().getInt(Note.KEY_NOTE);
-                    Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, idNoteForDelete);
-                    int cnt = getContentResolver().delete(uri, null, null);
-                    Log.d(LOG_TAG, "delete, count = " + cnt);
-                }
-                break;
-            case REQUEST_CODE_NEW_NOTE:
-                if (resultCode == RESULT_OK && data.getExtras() != null){
-                    Note note =(Note) data.getSerializableExtra(Note.KEY_NOTE);
-
-                    ContentValues cv = new ContentValues();
-                    cv.put(ToDoListProvider.KEY_TITLE, note.getTitle());
-                    cv.put(ToDoListProvider.KEY_DESCRIPTION, note.getDescription());
-
-                    Uri newUri = getContentResolver().insert(ToDoListProvider.NOTE_CONTENT_URI, cv);
-                }
-                break;
-        }
     }
 }

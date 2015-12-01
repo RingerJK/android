@@ -1,14 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ringerjk.com.todoisapp.activity.EnterRecordActivity">
+    tools:context=".activity.EnterRecordActivityNon">
 
     <item
         android:id="@+id/delete"
         android:orderInCategory="2"
         android:icon="@drawable/basket"
         android:title="@string/delete"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         />
 
      <item
@@ -16,7 +16,7 @@
         android:orderInCategory="1"
         android:icon="@drawable/okay"
         android:title="@string/okay"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         />
 
     <item
@@ -26,6 +26,18 @@
         android:title="@string/mail"
         app:showAsAction="ifRoom"
         />
-
-
+    <item
+        android:id="@+id/photo"
+        android:orderInCategory="3"
+        android:icon="@drawable/photo"
+        android:title="@string/photo"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/notification"
+        android:orderInCategory="3"
+        android:icon="@drawable/photo"
+        android:title="@string/notification"
+        app:showAsAction="ifRoom"
+        />
 </menu>
