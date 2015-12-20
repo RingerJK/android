@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import java.util.Date;
 
 import ringerjk.com.todoisapp.R;
 import ringerjk.com.todoisapp.adapter.CustomImageListViewAdapter;
+import ringerjk.com.todoisapp.contentProvider.DBHelper;
 import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
 import ringerjk.com.todoisapp.models.Note;
 import ringerjk.com.todoisapp.models.Picture;
@@ -40,6 +42,8 @@ public class EnterRecordActivity extends AppCompatActivity {
     EditText textDesc;
     ListView lvImage;
     private CustomImageListViewAdapter customImageAdapter;
+
+    ArrayAdapter<Bitmap> bitmapArrayAdapter;
     private Cursor picCursor;
 
     final int TYPE_PHOTO = 1110;
@@ -67,8 +71,8 @@ public class EnterRecordActivity extends AppCompatActivity {
                     null);
 
             if (cursor != null && cursor.moveToFirst()) {
-                textTitle.setText(cursor.getString(cursor.getColumnIndex(ToDoListProvider.KEY_TITLE_NOTES)));
-                textDesc.setText(cursor.getString(cursor.getColumnIndex(ToDoListProvider.KEY_DESCRIPTION_NOTES)));
+                textTitle.setText(cursor.getString(cursor.getColumnIndex(DBHelper.KEY_TITLE_NOTES)));
+                textDesc.setText(cursor.getString(cursor.getColumnIndex(DBHelper.KEY_DESCRIPTION_NOTES)));
                 cursor.close();
             }
         } else {
@@ -77,12 +81,12 @@ public class EnterRecordActivity extends AppCompatActivity {
 
         picCursor = getContentResolver().query(ToDoListProvider.PICTURE_CONTENT_URI
                 , null
-                , ToDoListProvider.KEY_NOTE_ID_PICTURES + " = ?"
+                , DBHelper.KEY_NOTE_ID_PICTURES + " = ?"
                 , new String[]{String.valueOf(idNoteForUpdateOrDelete)}
                 , null);
         startManagingCursor(picCursor);
 
-        customImageAdapter = new CustomImageListViewAdapter(this, new ArrayList<Bitmap>());
+        customImageAdapter = new CustomImageListViewAdapter(this, new ArrayList<String>());
         lvImage.setAdapter(customImageAdapter);
     }
 
@@ -90,13 +94,11 @@ public class EnterRecordActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (picCursor.moveToFirst()) {
-            ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
+            ArrayList<String> bitmapArrayList = new ArrayList<>();
             String imgPath;
-            Bitmap btm;
             do {
-                imgPath = picCursor.getString(picCursor.getColumnIndex(ToDoListProvider.KEY_IMAGE_PICTURES));
-                btm = BitmapFactory.decodeFile(imgPath);
-                bitmapArrayList.add(btm);
+                imgPath = picCursor.getString(picCursor.getColumnIndex(DBHelper.KEY_IMAGE_PICTURES));
+                bitmapArrayList.add(imgPath);
             } while (picCursor.moveToNext());
             customImageAdapter.updateListView(bitmapArrayList);
         }
@@ -208,8 +210,8 @@ public class EnterRecordActivity extends AppCompatActivity {
             Note note = new Note(textTitle.getText().toString(), textDesc.getText().toString());
 
             ContentValues cv = new ContentValues();
-            cv.put(ToDoListProvider.KEY_TITLE_NOTES, note.getTitle());
-            cv.put(ToDoListProvider.KEY_DESCRIPTION_NOTES, note.getDescription());
+            cv.put(DBHelper.KEY_TITLE_NOTES, note.getTitle());
+            cv.put(DBHelper.KEY_DESCRIPTION_NOTES, note.getDescription());
 
             Uri uri = getContentResolver().insert(ToDoListProvider.NOTE_CONTENT_URI, cv);
             idNoteForUpdateOrDelete = Integer.parseInt((uri.getLastPathSegment()));
@@ -217,8 +219,8 @@ public class EnterRecordActivity extends AppCompatActivity {
             Note note = new Note(idNoteForUpdateOrDelete, textTitle.getText().toString(), textDesc.getText().toString());
 
             ContentValues cv = new ContentValues();
-            cv.put(ToDoListProvider.KEY_TITLE_NOTES, note.getTitle());
-            cv.put(ToDoListProvider.KEY_DESCRIPTION_NOTES, note.getDescription());
+            cv.put(DBHelper.KEY_TITLE_NOTES, note.getTitle());
+            cv.put(DBHelper.KEY_DESCRIPTION_NOTES, note.getDescription());
 
             Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, note.getId());
             int cnt = getContentResolver().update(uri, cv, null, null);
@@ -227,8 +229,8 @@ public class EnterRecordActivity extends AppCompatActivity {
         if (photoUri != null) {
             Picture picture = new Picture(photoUri.getPath(), idNoteForUpdateOrDelete);
             ContentValues cv = new ContentValues();
-            cv.put(ToDoListProvider.KEY_IMAGE_PICTURES, picture.getImageLink());
-            cv.put(ToDoListProvider.KEY_NOTE_ID_PICTURES, picture.getNote_id());
+            cv.put(DBHelper.KEY_IMAGE_PICTURES, picture.getImageLink());
+            cv.put(DBHelper.KEY_NOTE_ID_PICTURES, picture.getNote_id());
             Uri uri = getContentResolver().insert(ToDoListProvider.PICTURE_CONTENT_URI, cv);
         }
     }

@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import ringerjk.com.todoisapp.R;
+import ringerjk.com.todoisapp.contentProvider.DBHelper;
 import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
 import ringerjk.com.todoisapp.service.NotifService;
 
@@ -69,7 +70,6 @@ public class NotificationActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             idNoteNtf = (int) extras.getInt(MainActivity.keyNodeId);
-            //Uri uri = ContentUris.withAppendedId(ToDoListProvider.NOTE_CONTENT_URI, idNoteNtf);
             Cursor cursor = getContentResolver().query(
                     ToDoListProvider.NOTE_CONTENT_URI,
                     null,
@@ -78,7 +78,7 @@ public class NotificationActivity extends AppCompatActivity {
                     null,
                     null);
             if (cursor != null && cursor.moveToFirst()) {
-                noteTitle = cursor.getString(cursor.getColumnIndex(ToDoListProvider.KEY_TITLE_NOTES));
+                noteTitle = cursor.getString(cursor.getColumnIndex(DBHelper.KEY_TITLE_NOTES));
                 cursor.close();
             }
             Intent intent = new Intent(NotificationActivity.this, NotifService.class);

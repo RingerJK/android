@@ -14,28 +14,9 @@ import android.util.Log;
 public class ToDoListProvider extends ContentProvider {
     final String LOG_TAG = "myLogs";
 
-    static final String DB_NAME = "toDoListDB";
-    static final int DB_VERSION = 1;
-    static final String TABLE_NOTE = "notes";
-    public static final String KEY_ID_NOTES = "_id";
-    public static final String KEY_TITLE_NOTES = "title";
-    public static final String KEY_DESCRIPTION_NOTES = "description";
 
-    public static String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTE + " ("
-            + KEY_ID_NOTES + " INTEGER PRIMARY KEY, "
-            + KEY_TITLE_NOTES + " TEXT, "
-            + KEY_DESCRIPTION_NOTES + " TEXT ); ";
 
-    static final String TABLE_PICTURES = "pictures";
-    public static final String KEY_ID_PICTURES = "_id";
-    public static final String KEY_IMAGE_PICTURES = "image";
-    public static final String KEY_NOTE_ID_PICTURES = "note_id";
 
-    public static String CREATE_PICTURES_TABLE = " CREATE TABLE " + TABLE_PICTURES + " ("
-            + KEY_ID_PICTURES +  " INTEGER PRIMARY KEY, "
-            + KEY_IMAGE_PICTURES + " VARCHAR, "
-            + KEY_NOTE_ID_PICTURES + " INTEGER, "
-            + " FOREIGN KEY ("+ KEY_NOTE_ID_PICTURES + ") REFERENCES " + TABLE_NOTE + " (" + KEY_ID_NOTES + ") ON DELETE CASCADE ); ";
 
     static final String AUTHORITY = "ringerjk.com.todoisapp.contentProvider.ToDoList";
 
@@ -83,11 +64,11 @@ public class ToDoListProvider extends ContentProvider {
         int uriType = uriMatcher.match(uri);
         db = dbHelper.getWritableDatabase();
         if (uriType == URI_NOTES || uriType == URI_NOTES_ID) {
-            Cursor cursor = db.query(TABLE_NOTE, projection, selection, selectionArgs, null, null, sortOrder);
+            Cursor cursor = db.query(DBHelper.TABLE_NOTE, projection, selection, selectionArgs, null, null, sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(), NOTE_CONTENT_URI);
             return cursor;
         } else if (uriType == URI_PICTURES || uriType == URI_PICTURES_ID){
-            Cursor cursor = db.query(TABLE_PICTURES, projection, selection, selectionArgs, null, null, sortOrder);
+            Cursor cursor = db.query(DBHelper.TABLE_PICTURES, projection, selection, selectionArgs, null, null, sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(), PICTURE_CONTENT_URI);
             return cursor;
         } else {
@@ -120,14 +101,14 @@ public class ToDoListProvider extends ContentProvider {
             case URI_NOTES:
                 Log.d(LOG_TAG, "insert, URI_NOTES = " + URI_NOTES);
                 db = dbHelper.getWritableDatabase();
-                rowID = db.insert(TABLE_NOTE, null, values);
+                rowID = db.insert(DBHelper.TABLE_NOTE, null, values);
                 resultUri = ContentUris.withAppendedId(NOTE_CONTENT_URI, rowID);
                 getContext().getContentResolver().notifyChange(resultUri, null);
                 return resultUri;
             case URI_PICTURES:
                 Log.d(LOG_TAG, "insert, URI_PICTURES = " + URI_PICTURES);
                 db = dbHelper.getWritableDatabase();
-                rowID = db.insert(TABLE_PICTURES, null, values);
+                rowID = db.insert(DBHelper.TABLE_PICTURES, null, values);
                 resultUri = ContentUris.withAppendedId(PICTURE_CONTENT_URI, rowID);
                 getContext().getContentResolver().notifyChange(resultUri, null);
                 return resultUri;
@@ -145,16 +126,16 @@ public class ToDoListProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 Log.d(LOG_TAG, "URI_CONTACTS_ID, " + id);
                 if (TextUtils.isEmpty(selection)) {
-                    selection = KEY_ID_NOTES + " = " + id;
+                    selection = DBHelper.KEY_ID_NOTES + " = " + id;
                 } else {
-                    selection = selection + " AND " + KEY_ID_NOTES + " = " + id;
+                    selection = selection + " AND "  +DBHelper.KEY_ID_NOTES + " = " + id;
                 }
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
         db = dbHelper.getWritableDatabase();
-        int cnt = db.delete(TABLE_NOTE, selection, selectionArgs);
+        int cnt = db.delete(DBHelper.TABLE_NOTE, selection, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
         return cnt;
     }
@@ -170,16 +151,16 @@ public class ToDoListProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 Log.d(LOG_TAG, "URI_NOTES_ID " + id);
                 if (TextUtils.isEmpty(selection)) {
-                    selection = KEY_ID_NOTES + " = " + id;
+                    selection = DBHelper.KEY_ID_NOTES + " = " + id;
                 } else {
-                    selection = selection + " AND " + KEY_ID_NOTES + " = " + id;
+                    selection = selection + " AND " + DBHelper.KEY_ID_NOTES + " = " + id;
                 }
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
         db = dbHelper.getWritableDatabase();
-        int cnt = db.update(TABLE_NOTE, values, selection, selectionArgs);
+        int cnt = db.update(DBHelper.TABLE_NOTE, values, selection, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
         return cnt;
     }

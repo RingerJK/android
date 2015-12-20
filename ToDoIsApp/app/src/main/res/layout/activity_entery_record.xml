@@ -1,71 +1,52 @@
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:focusableInTouchMode="false"
+    android:longClickable="false"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        android:focusableInTouchMode="false"
-        android:longClickable="false">
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textTitle"
-            android:layout_marginTop="46dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+    <EditText
+        android:id="@+id/textTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/textDesc"
-            android:singleLine="true"
-            android:layout_below="@+id/textView2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textTitle"
+        android:layout_centerHorizontal="true"
+        android:text="Description" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Title"
-            android:id="@+id/textView"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+    <EditText
+        android:id="@+id/textDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:inputType="textMultiLine"
+        android:singleLine="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Description"
-            android:id="@+id/textView2"
-            android:layout_below="@+id/textTitle"
-            android:layout_centerHorizontal="true" />
+    <ListView
+        android:id="@+id/lvImage"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/textDesc"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content" />
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="240dp"
-            android:id="@+id/lvImage"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ivTime"
-            android:layout_above="@+id/lvImage"
-            android:layout_below="@+id/textDesc"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_alignStart="@+id/textView2" />
-
-    </RelativeLayout>
+</RelativeLayout>
 

@@ -18,6 +18,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import ringerjk.com.todoisapp.R;
+import ringerjk.com.todoisapp.activity.iDontKnowWhatTheNameSetThisPackage.ListViewListener;
+import ringerjk.com.todoisapp.contentProvider.DBHelper;
 import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         final Cursor cursor = getContentResolver().query(ToDoListProvider.NOTE_CONTENT_URI, null, null, null, null);
         startManagingCursor(cursor);
 
-        String[] from = new String[]{ToDoListProvider.KEY_TITLE_NOTES};
+        String[] from = new String[]{DBHelper.KEY_TITLE_NOTES};
         int[] to = new int[]{R.id.titleText};
 
         adapter = new SimpleCursorAdapter(this, R.layout.custom_list_item, cursor, from, to, 0);
@@ -59,60 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
-        listView.setMultiChoiceModeListener(new ListView.MultiChoiceModeListener() {
-
-            ArrayList<Long> arrayList = new ArrayList<Long>();
-
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                if (checked) {
-                    arrayList.add(id);
-                }
-                if (!checked) {
-                    arrayList.remove(id);
-                }
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                Log.i(LOG_TAG, "onCreateActionMode");
-                MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.menu_main_long_click, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                Log.i(LOG_TAG, "onActionItemClicked");
-                switch (item.getItemId()) {
-                    case R.id.del_long_click:
-                        Uri uri = ToDoListProvider.NOTE_CONTENT_URI;
-                        String selection = "";
-                        for (int i = 0; i < arrayList.size() ; i++ ) {
-                            selection = selection + "_id = " + String.valueOf(arrayList.get(i));
-                            if (arrayList.size()-1 != i) {
-                                selection = selection + " OR ";
-                            }
-                        }
-                        getContentResolver().delete(uri, selection, null);
-                        adapter.getCursor().requery();
-                        mode.finish();
-                        return true;
-                }
-                return false;
-            }
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                listView.clearChoices();
-                arrayList.clear();
-            }
-        });
-
+        listView.setMultiChoiceModeListener(new ListViewListener(this, adapter, listView));
     }
 
     @Override

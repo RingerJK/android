@@ -2,57 +2,55 @@ package ringerjk.com.todoisapp.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ringerjk.com.todoisapp.R;
 
-public class CustomImageListViewAdapter extends BaseAdapter {
+public class CustomImageListViewAdapter extends ArrayAdapter<String>{
+    final static String LOG_TAG = "myLogs";
+    List<String> btmObjects;
+    //LayoutInflater lInflater;
 
-    Context context;
-    ArrayList<Bitmap> btmFilesArray;
-    LayoutInflater lInflater;
-
-    public CustomImageListViewAdapter(Context context, ArrayList<Bitmap> btmFile) {
-        this.context = context;
-        this.btmFilesArray = btmFile;
-        lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public CustomImageListViewAdapter(Context context, List<String> objects) {
+        super(context, R.layout.custom_list_pictures, objects);
+        Log.i(LOG_TAG, "CustomImageListViewAdapter constructor");
+        this.btmObjects = objects;
     }
 
     @Override
     public int getCount() {
-        return btmFilesArray.size();
+        return btmObjects.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return btmFilesArray.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
+    public String getItem(int position) {
+        return btmObjects.get(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-
-        if (view == null) {
-            view = lInflater.inflate(R.layout.custom_list_pictures, parent, false);
+        Log.i(LOG_TAG, "CustomImageListViewAdapter getView, position = " + position);
+        String bitmapPath = getItem(position);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.custom_list_pictures, parent, false);
         }
-        ImageView imageView = (ImageView)view.findViewById(R.id.imageView);
-        imageView.setImageBitmap(btmFilesArray.get(position));
-        return view;
+        ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
+        imageView.setImageURI(Uri.parse(bitmapPath));
+        return convertView;
     }
 
-    public void updateListView(ArrayList<Bitmap> bitmapArrayList){
-        btmFilesArray = bitmapArrayList;
+    public void updateListView(ArrayList<String> bitmapArrayList){
+        btmObjects = bitmapArrayList;
         notifyDataSetChanged();
     }
 }

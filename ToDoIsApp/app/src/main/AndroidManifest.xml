@@ -3,7 +3,7 @@
     package="ringerjk.com.todoisapp">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -30,11 +30,12 @@
             android:name=".contentProvider.ToDoListProvider"
             android:authorities="ringerjk.com.todoisapp.contentProvider.ToDoList" />
 
-        <activity android:name=".activity.NotificationActivity"/>
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:screenOrientation="portrait" />
         <service
             android:name=".service.NotifService"
-            android:exported="true"
-            />
+            android:exported="true" />
         <!--  android:enabled="true"
             android:exported="true"
             android:process=":myservice"-->
