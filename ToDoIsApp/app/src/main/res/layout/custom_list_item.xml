@@ -4,14 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="5dp"
         android:background="?android:attr/activatedBackgroundIndicator"
-        android:textColor="#eac4000d"
+        android:textColor="#000000"
         android:textSize="24sp">
     </TextView>
 </LinearLayout>

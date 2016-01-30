@@ -41,6 +41,6 @@ public class NotifService extends IntentService {
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, 0);
         notif.setLatestEventInfo(this, "У вас напоминание", titleNote, pIntent);
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
-        nm.notify(r.nextInt(10000), notif);
+        nm.notify((int) idNote, notif);
     }
 }

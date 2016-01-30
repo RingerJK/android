@@ -8,10 +8,8 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,13 +31,17 @@ public class NotificationActivity extends AppCompatActivity {
     final static String LOG_TAG = "myLogs";
     final static public String KEY_TITLE = "keyTitle";
 
-    TextView tvTime;
-    TextView tvDate;
+    TextView newTvTime;
+    TextView newTvDate;
+
     Calendar dayNotification;
     final int DIALOG_TIME = 10;
     final int DIALOG_DATE = 20;
 
     AlarmManager am;
+
+    private String time_str = "Время\n";
+    private String date_str = "Дата\n";
 
     private static final DateFormat dfFull = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private static final DateFormat dfHrAndMi = new SimpleDateFormat("HH:mm");
@@ -50,13 +52,14 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-        tvTime = (TextView) findViewById(R.id.tvTime);
-        tvDate = (TextView) findViewById(R.id.tvDate);
         dayNotification = Calendar.getInstance();
         dayNotification.add(Calendar.DAY_OF_MONTH, 1);
 
-        tvTime.setText(dfHrAndMi.format(dayNotification.getTime()));
-        tvDate.setText(dfDMY.format(dayNotification.getTime()));
+        newTvTime = (TextView) findViewById(R.id.newTvTime_str);
+        newTvDate = (TextView) findViewById(R.id.newTvDate_str);
+
+        newTvTime.setText(time_str + dfHrAndMi.format(dayNotification.getTime()));
+        newTvDate.setText(date_str + dfDMY.format(dayNotification.getTime()));
 
         Log.i(LOG_TAG, "DateNotiif " + dfFull.format(dayNotification.getTime()));
     }
@@ -138,14 +141,16 @@ public class NotificationActivity extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             dayNotification.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dayNotification.set(Calendar.MINUTE, minute);
-            tvTime.setText(dfHrAndMi.format(dayNotification.getTime()));
+            dayNotification.set(Calendar.SECOND, 0);
+
+            newTvTime.setText(time_str + dfHrAndMi.format(dayNotification.getTime()));
         }
     };
 
     OnDateSetListener myCallBackDate = new OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dayNotification.set(year, monthOfYear, dayOfMonth);
-            tvDate.setText(dfDMY.format(dayNotification.getTime()));
+            newTvDate.setText(date_str + dfDMY.format(dayNotification.getTime()));
         }
     };
 }

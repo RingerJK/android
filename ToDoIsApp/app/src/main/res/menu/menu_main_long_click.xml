@@ -5,7 +5,7 @@
     android:id="@+id/del_long_click"
     android:icon="@drawable/basket"
     android:orderInCategory="1"
-    android:title="@string/add_note"
+    android:title="@string/delete"
     android:showAsAction="ifRoom" />
 
 </menu>

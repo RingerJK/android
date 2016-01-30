@@ -128,7 +128,7 @@ public class ToDoListProvider extends ContentProvider {
                 if (TextUtils.isEmpty(selection)) {
                     selection = DBHelper.KEY_ID_NOTES + " = " + id;
                 } else {
-                    selection = selection + " AND "  +DBHelper.KEY_ID_NOTES + " = " + id;
+                    selection = selection + " AND " +DBHelper.KEY_ID_NOTES + " = " + id;
                 }
                 break;
             default:

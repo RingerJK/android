@@ -1,4 +1,4 @@
-package ringerjk.com.todoisapp.activity.iDontKnowWhatTheNameSetThisPackage;
+package ringerjk.com.todoisapp.activity.supportPackageActivity;
 
 import android.content.Context;
 import android.net.Uri;

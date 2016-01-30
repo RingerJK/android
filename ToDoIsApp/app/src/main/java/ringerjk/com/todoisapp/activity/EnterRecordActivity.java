@@ -5,11 +5,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -60,7 +60,7 @@ public class EnterRecordActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            idNoteForUpdateOrDelete = (int)extras.getLong(MainActivity.keyNodeId);
+            idNoteForUpdateOrDelete = (int) extras.getLong(MainActivity.keyNodeId);
             String selection = "_id = ?";
             String[] selectionArgs = new String[]{String.valueOf(idNoteForUpdateOrDelete)};
             Cursor cursor = getContentResolver().query(
@@ -75,8 +75,6 @@ public class EnterRecordActivity extends AppCompatActivity {
                 textDesc.setText(cursor.getString(cursor.getColumnIndex(DBHelper.KEY_DESCRIPTION_NOTES)));
                 cursor.close();
             }
-        } else {
-            saveDataInDB(null);
         }
 
         picCursor = getContentResolver().query(ToDoListProvider.PICTURE_CONTENT_URI
@@ -112,10 +110,6 @@ public class EnterRecordActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (textTitle.getText().toString().trim().length() == 0){
-            textTitle.setText("Note "+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
-            saveDataInDB(null);
-        }
     }
 
     public void composeEmail() {
@@ -129,7 +123,7 @@ public class EnterRecordActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_entery_record, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -163,8 +157,21 @@ public class EnterRecordActivity extends AppCompatActivity {
                 break;
             case R.id.photo:
                 createDirectory();
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, REQUEST_CODE_PHOTO);
+                Intent pickIntent = new Intent();
+                pickIntent.setType("image/*");
+                pickIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
+                Intent chooserIntent = Intent.createChooser(pickIntent, pickTitle);
+                chooserIntent.putExtra
+                        (
+                                Intent.EXTRA_INITIAL_INTENTS,
+                                new Intent[]{takePhotoIntent}
+                        );
+
+                startActivityForResult(chooserIntent, REQUEST_CODE_PHOTO);
                 break;
             case R.id.notification:
                 if (textTitle.getText().toString().trim().length() == 0) {
@@ -174,31 +181,44 @@ public class EnterRecordActivity extends AppCompatActivity {
                     intent = new Intent(this, NotificationActivity.class);
                     intent.putExtra(MainActivity.keyNodeId, idNoteForUpdateOrDelete);
                     startActivity(intent);
-                    break;
                 }
+                break;
+            case R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        boolean isCamera;
         Log.d(LOG_TAG, "onActivityResult, requestCode =" + requestCode + "; data " + data + "; resultCode " + resultCode);
         switch (requestCode) {
             case REQUEST_CODE_PHOTO:
-                if (resultCode == RESULT_OK && data != null) {
-                    Uri uri = generateFileUri(TYPE_PHOTO);
-                    Bitmap btm = (Bitmap) data.getExtras().get("data");
-                    if (null != btm) {
-                        try {
-                            FileOutputStream out = new FileOutputStream(uri.getPath());
-                            btm.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                            out.flush();
-                            out.close();
-                            saveDataInDB(uri);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                if (resultCode == RESULT_OK) {
+                    if (null == data.getAction()) { //галерея
+                        Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
+                        cursor.moveToFirst();
+                        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                        Uri directoryImage = Uri.parse(cursor.getString(idx));
+                        saveDataInDB(directoryImage);
+                        cursor.close();
+                    } else { // камера
+                        Uri uri = generateFileUri(TYPE_PHOTO);
+                        Bitmap btm = (Bitmap) data.getExtras().get("data");
+                        if (null != btm) {
+                            try {
+                                FileOutputStream out = new FileOutputStream(uri.getPath());
+                                btm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                out.flush();
+                                out.close();
+                                saveDataInDB(uri);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Toast.makeText(getApplicationContext(), "Btm: " + data.getData(), Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(getApplicationContext(), "Btm: " + data.getData(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;

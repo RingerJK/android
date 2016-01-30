@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     android:foregroundGravity="center_horizontal"
     android:nestedScrollingEnabled="false"
     android:orientation="vertical">
@@ -11,68 +12,72 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Notification"
+        android:layout_marginBottom="8dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+
+    <View
+        android:id="@+id/separator1"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_alignTop="@+id/newTvTime_str"
+        android:background="@android:color/black"
+        android:visibility="visible" />
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/newTvDate_str"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Время"
-        android:id="@+id/tvTime_str"
+        android:layout_below="@id/newTvTime_str"
+        android:clickable="true"
+        android:onClick="onClickDate"
+        android:text="Дата\nhh.mi"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_below="@+id/newTvTime_str"
+        android:background="@android:color/black"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/newTvTime_str"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Дата"
-        android:id="@+id/tvDate_str"
-        android:layout_below="@+id/tvTime_str"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:clickable="true"
-        android:text="hh.mi"
-        android:id="@+id/tvTime"
-        android:layout_alignTop="@id/tvTime_str"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClickTime" />
+        android:onClick="onClickTime"
+        android:text="Время\nhh.mi"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/tvDate"
-        android:text="dd.mm.yyyy"
-        android:clickable="true"
-        android:layout_alignTop="@+id/tvDate_str"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClickDate"/>
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_below="@+id/newTvDate_str"
+        android:background="@android:color/black"
+        android:visibility="visible" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_notification"
         android:id="@+id/Okay"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="onClickAddNotification" />
-
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cancel_notification"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:onClick="onClickAddNotification"
+        android:text="@string/add_notification" />
+
+    <Button
         android:id="@+id/Cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/Okay"
         android:layout_centerHorizontal="true"
-        android:onClick="onClickCancel" />
+        android:onClick="onClickCancel"
+        android:text="@string/cancel_notification" />
+
+
 </RelativeLayout>

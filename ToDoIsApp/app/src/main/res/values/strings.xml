@@ -9,8 +9,9 @@
     <string name="add_note">Add Note</string>
     <string name="title_activity_my_list">MyListActivity</string>
     <string name="mail">Send mail</string>
-    <string name="photo">Add photo</string>
+    <string name="photo">Add photo/picture</string>
     <string name="notification">Add notification</string>
     <string name="add_notification">Add Notification</string>
     <string name="cancel_notification">Cancel</string>
+    <string name="editText">Enter Note Title</string>
 </resources>
