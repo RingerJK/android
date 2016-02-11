@@ -1,4 +1,4 @@
-package ringerjk.com.todoisapp.activity.supportPackageActivity;
+package ringerjk.com.todoisapp.activity.activityUtils;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -19,7 +19,7 @@ import ringerjk.com.todoisapp.models.Note;
 public class EditorListener extends View implements TextView.OnEditorActionListener {
     final String LOG_TAG = "myLogs";
 
-    Context context;
+    private Context context;
 
     public EditorListener(Context context) {
         super(context);

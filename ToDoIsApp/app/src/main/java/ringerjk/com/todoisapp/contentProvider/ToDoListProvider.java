@@ -14,30 +14,26 @@ import android.util.Log;
 public class ToDoListProvider extends ContentProvider {
     final String LOG_TAG = "myLogs";
 
+    private static final String AUTHORITY = "ringerjk.com.todoisapp.contentProvider.ToDoList";
 
-
-
-
-    static final String AUTHORITY = "ringerjk.com.todoisapp.contentProvider.ToDoList";
-
-    static final String NOTE_PATH = "notes";
-    static final String PICTURES_PATH = "pictures";
+    private static final String NOTE_PATH = "notes";
+    private static final String PICTURES_PATH = "pictures";
 
     public static final Uri NOTE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + NOTE_PATH);
-    static final String NOTE_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + NOTE_PATH;
-    static final String NOTE_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + NOTE_PATH;
+    private static final String NOTE_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + NOTE_PATH;
+    private static final String NOTE_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + NOTE_PATH;
 
     public static final Uri PICTURE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + PICTURES_PATH);
-    static final String PICTURE_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + PICTURES_PATH;
-    static final String PICTURE_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + PICTURES_PATH;
+    private  static final String PICTURE_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + PICTURES_PATH;
+    private static final String PICTURE_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + PICTURES_PATH;
 
     // общий Uri
-    static final int URI_NOTES = 10;
+    private static final int URI_NOTES = 10;
     // Uri с указанным ID
-    static final int URI_NOTES_ID = 20;
+    private static final int URI_NOTES_ID = 20;
 
-    static final int URI_PICTURES = 30;
-    static final int URI_PICTURES_ID = 40;
+    private static final int URI_PICTURES = 30;
+    private static final int URI_PICTURES_ID = 40;
 
     private static final UriMatcher uriMatcher;
     static {
@@ -48,8 +44,8 @@ public class ToDoListProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, PICTURES_PATH + "/#", URI_PICTURES_ID);
     }
 
-    DBHelper dbHelper;
-    SQLiteDatabase db;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
     @Override
     public boolean onCreate() {

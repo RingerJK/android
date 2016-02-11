@@ -5,48 +5,108 @@
     android:layout_centerHorizontal="true"
     android:focusableInTouchMode="false"
     android:longClickable="false"
-    android:orientation="vertical">
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/textTitle"
+        <EditText
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_title"
+            android:inputType="textMultiLine"
+            android:maxLines="3" />
+
+        <EditText
+            android:id="@+id/textDesc"
+            android:layout_width="match_parent"
+            android:hint="@string/edit_description"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:maxLines="7" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/hz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@id/container"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textTitle"
-        android:layout_centerHorizontal="true"
-        android:text="Description" />
+        <ImageButton
+            android:id="@+id/btnNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_add_alert_black_36dp"
+            android:contentDescription="olo" />
 
-    <EditText
-        android:id="@+id/textDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:inputType="textMultiLine"
-        android:singleLine="true" />
+        <LinearLayout
+            android:id="@+id/hideContainerNotification"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/btnNotification"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/separator1"
+                android:layout_width="wrap_content"
+                android:layout_height="0.2dp"
+                android:background="@android:color/black"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/newTvTime"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <View
+                android:id="@+id/separator2"
+                android:layout_width="wrap_content"
+                android:layout_height="0.2dp"
+                android:background="@android:color/black"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/newTvDate"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <View
+                android:id="@+id/separator3"
+                android:layout_width="wrap_content"
+                android:layout_height="0.2dp"
+                android:background="@android:color/black"
+                android:visibility="visible" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lvImage"
+        android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:layout_below="@id/textDesc"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_height="wrap_content" />
+        android:layout_below="@id/hz" />
+
 
 </RelativeLayout>
 

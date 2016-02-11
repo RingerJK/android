@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    static final String DB_NAME = "toDoListDB";
-    static final int DB_VERSION = 1;
+    private static final String DB_NAME = "toDoListDB";
+    private static final int DB_VERSION = 1;
 
-    static final String TABLE_NOTE = "notes";
+    public static final String TABLE_NOTE = "notes";
     public static final String KEY_ID_NOTES = "_id";
     public static final String KEY_TITLE_NOTES = "title";
     public static final String KEY_DESCRIPTION_NOTES = "description";
@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_DESCRIPTION_NOTES + " TEXT ); ";
 
 
-    static final String TABLE_PICTURES = "pictures";
+    public static final String TABLE_PICTURES = "pictures";
     public static final String KEY_ID_PICTURES = "_id";
     public static final String KEY_IMAGE_PICTURES = "image";
     public static final String KEY_NOTE_ID_PICTURES = "note_id";

@@ -14,4 +14,11 @@
     <string name="add_notification">Add Notification</string>
     <string name="cancel_notification">Cancel</string>
     <string name="editText">Enter Note Title</string>
+    <string name="warning_title">Заполните поле Title</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="notification__service">У вас уведомление</string>
+    <string name="edit_description">Edit description</string>
+    <string name="edit_title">Edit Title</string>
+
 </resources>

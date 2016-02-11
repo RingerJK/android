@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Note implements Serializable {
 
     public static final String KEY_NOTE = "Note";
-    int _id;
+    public int _id;
     private String title;
     private String description;
 

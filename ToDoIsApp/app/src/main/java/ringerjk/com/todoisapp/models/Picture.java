@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Picture implements Serializable {
 
     public static final String KEY_PICTURE = "Note";
-    int _id;
+    public int _id;
     private String imageLink;
     private int note_id;
 

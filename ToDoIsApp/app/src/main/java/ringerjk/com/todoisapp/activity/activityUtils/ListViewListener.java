@@ -1,4 +1,4 @@
-package ringerjk.com.todoisapp.activity.supportPackageActivity;
+package ringerjk.com.todoisapp.activity.activityUtils;
 
 import android.content.Context;
 import android.net.Uri;
@@ -20,7 +20,7 @@ import ringerjk.com.todoisapp.contentProvider.ToDoListProvider;
 public class ListViewListener implements AbsListView.MultiChoiceModeListener { // implements ActionMode.Callback {
     final String LOG_TAG = "myLogs";
 
-    ArrayList<Long> arrayList = new ArrayList<Long>();
+    private ArrayList<Long> arrayList = new ArrayList<Long>();
     private Context context;
     private SimpleCursorAdapter adapter;
     private ListView listView;
