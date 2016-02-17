@@ -20,5 +20,6 @@
     <string name="notification__service">У вас уведомление</string>
     <string name="edit_description">Edit description</string>
     <string name="edit_title">Edit Title</string>
+    <string name="selected_elements_main_activity">"Selected: "</string>
 
 </resources>

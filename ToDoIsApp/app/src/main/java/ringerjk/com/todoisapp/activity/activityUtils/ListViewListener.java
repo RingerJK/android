@@ -1,5 +1,7 @@
 package ringerjk.com.todoisapp.activity.activityUtils;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -39,6 +41,7 @@ public class ListViewListener implements AbsListView.MultiChoiceModeListener { /
         if (!checked) {
             arrayList.remove(id);
         }
+        mode.setTitle(context.getString(R.string.selected_elements_main_activity)+arrayList.size());
     }
 
     @Override
