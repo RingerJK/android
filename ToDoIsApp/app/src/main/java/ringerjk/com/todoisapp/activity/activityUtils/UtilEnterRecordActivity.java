@@ -36,10 +36,10 @@ public class UtilEnterRecordActivity {
     public void setDateOnView(Calendar date, TextView view, int requestCode) {
         switch (requestCode) {
             case MyConst.DATE:
-                view.setText(R.string.date + " " + MyConst.dfDMY.format(date.getTime()));
+                view.setText(view.getResources().getString(R.string.date) + " " + MyConst.dfDMY.format(date.getTime()));
                 break;
             case MyConst.TIME:
-                view.setText(R.string.time + " " + MyConst.dfHrAndMi.format(date.getTime()));
+                view.setText(view.getResources().getString(R.string.time) + " " + MyConst.dfHrAndMi.format(date.getTime()));
                 break;
         }
     }

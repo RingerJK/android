@@ -35,12 +35,6 @@
                 android:orderInCategory="3"
                 android:title="@string/photo"
                 app:showAsAction="ifRoom" />
-            <item
-                android:id="@+id/btnNotification"
-                android:icon="@drawable/notifications_white_36dp"
-                android:orderInCategory="3"
-                android:title="@string/notification"
-                app:showAsAction="ifRoom" />
         </menu>
     </item>
 
