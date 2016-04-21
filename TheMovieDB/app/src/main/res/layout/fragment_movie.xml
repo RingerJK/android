@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.ListMoviesFragment">
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/moviePoster"
+            android:layout_width="144dp"
+            android:layout_height="144dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/movieTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/moviePoster"
+            android:layout_toRightOf="@+id/moviePoster"
+            android:text="Movie Title"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/countries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/movieTitle"
+            android:layout_alignStart="@id/movieTitle"
+            android:layout_below="@id/movieTitle"
+            android:maxLines="1"
+            android:text="(Countries)" />
+
+        <ImageView
+            android:id="@+id/iconTime"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_below="@+id/countries"
+            android:layout_marginTop="8dp"
+            android:layout_alignLeft="@id/countries"
+            android:src="@drawable/av_timer" />
+
+        <TextView
+            android:id="@+id/movieYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iconTime"
+            android:layout_toEndOf="@id/iconTime"
+            android:layout_toRightOf="@id/iconTime"
+            android:text="year" />
+
+        <ImageView
+            android:id="@+id/iconRate"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignBottom="@id/movieYear"
+            android:layout_marginLeft="16dp"
+            android:layout_toEndOf="@id/movieYear"
+            android:layout_toRightOf="@id/movieYear"
+            android:src="@drawable/star_outline" />
+
+        <TextView
+            android:id="@+id/rateMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iconRate"
+            android:layout_toEndOf="@id/iconRate"
+            android:layout_toRightOf="@id/iconRate"
+            android:text="rate" />
+
+        <TextView
+            android:id="@+id/voteCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/rateMovie"
+            android:layout_toEndOf="@id/rateMovie"
+            android:layout_toRightOf="@id/rateMovie"
+            android:text="(votes)" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/sinopsisTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl"
+        android:layout_centerHorizontal="true"
+        android:text="Синопсис" />
+
+    <TextView
+        android:id="@+id/sinopsis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sinopsisTitle"
+        android:text="About Film" />
+</RelativeLayout>

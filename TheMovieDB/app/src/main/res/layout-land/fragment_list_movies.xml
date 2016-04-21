@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false">
+
+    <fragment class="ringerjk.com.themoviedb.ui.ListMoviesFragment"
+        android:id="@+id/moviesList"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/flagment_list_movies_v2" />
+    <FrameLayout
+        android:id="@+id/frameMovie"
+        android:tag="frameMovie"
+        android:layout_weight="7"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+</LinearLayout>

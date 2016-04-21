@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TheMovieDB</string>
+    <string name="coming_soon">Скоро в кино</string>
+    <string name="today">Сегодня в кино</string>
+    <string name="popular">Популярное</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_list_movies_and_movie">ListMoviesAndMovieActivity</string>
+</resources>
