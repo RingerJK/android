@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import ringerjk.com.themoviedb.MyConst;
@@ -23,6 +24,8 @@ public class CustomMoviesListAdapter extends ArrayAdapter<MovieInList> {
     static class ViewHolder{
         TextView title;
         ImageView poster;
+        TextView movieYear;
+        TextView rateMovie;
     }
 
     public CustomMoviesListAdapter(Context context, List<MovieInList> objects) {
@@ -54,12 +57,16 @@ public class CustomMoviesListAdapter extends ArrayAdapter<MovieInList> {
             holder = new ViewHolder();
             holder.title = (TextView)convertView.findViewById(R.id.filmTitle);
             holder.poster = (ImageView) convertView.findViewById(R.id.posterFilm);
+            holder.movieYear = (TextView) convertView.findViewById(R.id.movieYear);
+            holder.rateMovie = (TextView) convertView.findViewById(R.id.rateMovie);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
         holder.title.setText(moviesList.get(position).getOriginalTitle());
         Picasso.with(getContext()).load(MyConst.urlDefaultImage + moviesList.get(position).getPosterPath()).into(holder.poster);
+        holder.movieYear.setText(new SimpleDateFormat("yyyy").format(moviesList.get(position).getReleaseDate()));
+        holder.rateMovie.setText(Double.toString(moviesList.get(position).getVoteAverage()));
         convertView.setId(moviesList.get(position).getId());
         return convertView;
     }

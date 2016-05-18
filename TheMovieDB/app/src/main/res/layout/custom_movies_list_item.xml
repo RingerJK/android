@@ -22,7 +22,46 @@
         android:ellipsize="end"
         android:gravity="start"
         android:maxLines="1"
-        android:text="fdfsvbbvnbv"
+        android:text="Movie name"
         android:textColor="#000000"
         android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/iconTime"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_below="@+id/filmTitle"
+        android:layout_marginTop="8dp"
+        android:layout_alignLeft="@id/filmTitle"
+        android:src="@drawable/av_timer" />
+
+    <TextView
+        android:id="@+id/movieYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iconTime"
+        android:layout_toEndOf="@id/iconTime"
+        android:layout_toRightOf="@id/iconTime"
+        android:textColor="#000000"
+        android:text="year" />
+
+    <ImageView
+        android:id="@+id/iconRate"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignBottom="@id/movieYear"
+        android:layout_marginLeft="16dp"
+        android:layout_toEndOf="@id/movieYear"
+        android:layout_toRightOf="@id/movieYear"
+        android:src="@drawable/star_outline" />
+
+    <TextView
+        android:id="@+id/rateMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iconRate"
+        android:layout_toEndOf="@id/iconRate"
+        android:layout_toRightOf="@id/iconRate"
+        android:textColor="#000000"
+        android:text="rate" />
 </RelativeLayout>

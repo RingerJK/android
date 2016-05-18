@@ -1,11 +1,11 @@
 package ringerjk.com.themoviedb.ui;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,6 +100,7 @@ public class MovieFragment extends Fragment {
         }
         return id;
     }
+
 
     public class MovieActivityBroadcastReceiver extends BroadcastReceiver {
         public static final String RESPONSE_MOVIE_ACTIVITY_RECEIVER = "RESPONSE_MOVIE_ACTIVITY_RECEIVER";

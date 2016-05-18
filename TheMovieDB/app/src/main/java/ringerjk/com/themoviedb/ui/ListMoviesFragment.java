@@ -2,6 +2,7 @@ package ringerjk.com.themoviedb.ui;
 
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -65,17 +66,24 @@ public class ListMoviesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.flagment_list_movies_v2, null);
-        String pathUrl = getActivity().getIntent().getExtras().getString(MyConst.PATH_URL);
-
+        View v = inflater.inflate(R.layout.flagment_list_movies, null);
+        listViewMovies = (ListView) v.findViewById(R.id.listViewMovies2);
+        handleIntent(getActivity().getIntent());
+        return v;
+    }
+    private void handleIntent(Intent intent){
         Intent intentRequestListMoviesFragmentService = new Intent(getActivity(), RequestListFilmActService.class);
-        intentRequestListMoviesFragmentService.putExtra(MyConst.EXTRA_REQUEST_URI_PATH, pathUrl);
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            intentRequestListMoviesFragmentService.putExtra(MyConst.EXTRA_REQUEST_URI_PATH, MyConst.pathUrlSearchMovie);
+            intentRequestListMoviesFragmentService.putExtra(MyConst.QUERY_PATH, query);
+        } else {
+            String pathUrl = intent.getExtras().getString(MyConst.PATH_URL);
+            intentRequestListMoviesFragmentService.putExtra(MyConst.EXTRA_REQUEST_URI_PATH, pathUrl);
+        }
         intentRequestListMoviesFragmentService.putExtra(MyConst.INTENT_FILTER, ListMoviesFragmentBroadcastReceiver.INTENT_FILTER_LIST_FILM);
         getActivity().startService(intentRequestListMoviesFragmentService);
-
-        listViewMovies = (ListView) v.findViewById(R.id.listViewMovies2);
-
-        return v;
     }
 
     @Override

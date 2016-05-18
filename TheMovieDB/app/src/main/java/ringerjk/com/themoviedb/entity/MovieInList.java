@@ -15,7 +15,10 @@ public class MovieInList {
     @SerializedName("release_date")
     private Date releaseDate;
     @SerializedName("vote_average")
-    private float voteAverage;
+    private double voteAverage;
+    @SerializedName("vote_count")
+    private int voteCount;
+
 
     public int getId() {
         return id;
@@ -49,11 +52,19 @@ public class MovieInList {
         this.releaseDate = releaseDate;
     }
 
-    public float getVoteAverage() {
+    public double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(float voteAverage) {
+    public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 }

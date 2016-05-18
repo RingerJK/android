@@ -15,7 +15,7 @@ import ringerjk.com.themoviedb.MyConst;
 
 public class RequestListFilmActService extends IntentService {
     public RequestListFilmActService() {
-        super("RequestListFilmActService");
+        super("RequestListService");
         Log.i(MyConst.MY_LOG, "constructor RequestListFilmActService");
     }
 
@@ -24,12 +24,14 @@ public class RequestListFilmActService extends IntentService {
         Log.i(MyConst.MY_LOG, "onHandleIntent in RequestListFilmActService");
         String requestString = intent.getStringExtra(MyConst.EXTRA_REQUEST_URI_PATH);
         String intentFilter = intent.getStringExtra(MyConst.INTENT_FILTER);
+        String query = intent.getStringExtra(MyConst.QUERY_PATH);
         Log.i(MyConst.MY_LOG, "requestString = " + requestString);
         URL url = null;
         try {
             url = new URL(MyConst.urlDefault
                     + intent.getStringExtra(MyConst.EXTRA_REQUEST_URI_PATH)
-                    + "?api_key=" + MyConst.apiKey);
+                    + "?api_key=" + MyConst.apiKey
+                    + "&query=" + query);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -39,6 +41,9 @@ public class RequestListFilmActService extends IntentService {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("Accept", "application/json");
+            if (query != null) {
+//                urlConnection.setRequestProperty("query", query);
+            }
 //            urlConnection.setRequestProperty("page", "1");
             urlConnection.connect();
             BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

@@ -3,29 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".ui.MainActivity">
 
-  <Button
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/comingSoonBtn"
-      android:text="@string/coming_soon"
-      android:layout_weight="1"
-      />
     <Button
+        android:id="@+id/comingSoonBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/coming_soon" />
+
+    <Button
         android:id="@+id/todayInCinemaBtn"
-        android:text="@string/today"
-        android:layout_weight="1"
-        />
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/popularBtn"
-        android:text="@string/popular"
         android:layout_weight="1"
-        />
+        android:text="@string/today" />
+
+    <Button
+        android:id="@+id/popularBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/popular" />
 </LinearLayout>

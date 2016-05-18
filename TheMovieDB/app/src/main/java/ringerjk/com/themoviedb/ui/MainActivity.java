@@ -1,11 +1,13 @@
 package ringerjk.com.themoviedb.ui;
 
-import android.content.BroadcastReceiver;
+import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.Button;
 
 import ringerjk.com.themoviedb.MyConst;
@@ -16,12 +18,7 @@ import ringerjk.com.themoviedb.ui.util.TodayInCinemaBtnListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    //    String url = "https://api.themoviedb.org/3";
-    MainActivityBroadcastReceiver receiver;
-
-    Button comingSoonBtn;
-    Button todayInCinemaBtn;
-    Button popularBtn;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +26,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        comingSoonBtn = (Button) findViewById(R.id.comingSoonBtn);
-        todayInCinemaBtn = (Button) findViewById(R.id.todayInCinemaBtn);
-        popularBtn = (Button) findViewById(R.id.popularBtn);
+        Button comingSoonBtn = (Button) findViewById(R.id.comingSoonBtn);
+        Button todayInCinemaBtn = (Button) findViewById(R.id.todayInCinemaBtn);
+        Button popularBtn = (Button) findViewById(R.id.popularBtn);
 
         comingSoonBtn.setOnClickListener(new ComingSoonBtnListener());
         todayInCinemaBtn.setOnClickListener(new TodayInCinemaBtnListener());
         popularBtn.setOnClickListener(new PopularBtnListener());
     }
 
-    public class MainActivityBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+        return true;
     }
 }
